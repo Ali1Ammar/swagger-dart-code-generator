@@ -381,6 +381,12 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
       } else if (successResponse.content?.schema?.properties.isNotEmpty ==
           true) {
         results.add(response);
+      } else if (successResponse
+              .content?.schema?.items?.properties.isNotEmpty ==
+          true) {
+        final itemClassName = '$response\$Item';
+
+        results.add(itemClassName);
       } else if (successResponse.content?.schema?.allOf.isNotEmpty == true &&
           successResponse.content?.schema?.title.isNotEmpty == true) {
         results.add(response);
@@ -1335,7 +1341,7 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
 
         final typeName = getValidatedClassName('$requestText\$Response');
 
-        return typeName.asList();
+        return typeName;
       } else if (itemsType.isNotEmpty) {
         final parameterType = _mapParameterName(itemsType, itemsFormat, '');
         return parameterType.asList();
